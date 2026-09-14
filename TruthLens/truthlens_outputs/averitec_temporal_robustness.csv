@@ -1,0 +1,5 @@
+condition,accuracy,macro_f1
+"Sys1 text-only (no evidence, timing-invariant)",0.618,0.293
+A  Sys4 unrestricted evidence (depth-30 pool),0.466,0.332
+B  Sys4 minus provably post-claim evidence (T2),0.462,0.329
+"C  Sys4 provably contemporaneous only (T3, BOUND)",0.308,0.213

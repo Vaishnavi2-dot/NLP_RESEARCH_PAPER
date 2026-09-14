@@ -1,0 +1,7 @@
+setting,n_docs,mode,recall_at_5,precision_at_5,evidence_f1_at_5
+gold_pages_only,6934,bm25,0.7637,0.2121,0.3097
+gold_pages_only,6934,dense,0.7242,0.1995,0.2925
+gold_pages_only,6934,hybrid,0.7877,0.2207,0.3209
+expanded,207089,bm25,0.6267,0.1602,0.2427
+expanded,207089,dense,0.5901,0.1547,0.2314
+expanded,207089,hybrid,0.6695,0.1773,0.2637

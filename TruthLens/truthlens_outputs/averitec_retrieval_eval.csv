@@ -1,0 +1,4 @@
+mode,recall_at_5,precision_at_5,evidence_f1_at_5
+bm25,0.3976,0.168,0.2193
+dense,0.4106,0.1657,0.2203
+hybrid,0.4148,0.1753,0.2289

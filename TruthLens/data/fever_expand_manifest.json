@@ -1,0 +1,11 @@
+{
+ "seed": 42,
+ "gold_sentences": 6934,
+ "gold_pages": 435,
+ "distractor_pages_requested": 50000,
+ "distractor_pages_found": 45667,
+ "distractor_sentences": 200155,
+ "total_sentences": 207089,
+ "min_sentence_chars": 30,
+ "source": "https://fever.ai/download/fever/wiki-pages.zip (June 2017 dump)"
+}

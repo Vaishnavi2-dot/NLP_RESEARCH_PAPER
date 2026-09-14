@@ -1,0 +1,4 @@
+mode,recall_at_5,precision_at_5
+bm25,0.907,0.267
+dense,1.0,0.289
+hybrid,0.981,0.281

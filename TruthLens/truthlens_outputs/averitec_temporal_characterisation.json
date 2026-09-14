@@ -1,0 +1,16 @@
+{
+ "claims_considered": 437,
+ "gold_evidence_items": 998,
+ "pre": 90,
+ "post": 16,
+ "unknown": 892,
+ "pct_provably_pre_dating": 9.0,
+ "claims_with_no_predating_evidence": 362,
+ "median_gap_days": 107,
+ "pct_dated_items_after_claim": 76.1,
+ "reliable_subset": {
+  "claims_with_reliable_date": 80,
+  "pre": 83,
+  "post": 16
+ }
+}

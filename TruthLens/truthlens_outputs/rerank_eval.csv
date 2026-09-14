@@ -1,0 +1,5 @@
+dataset,system,n_claims,recall_at_5,precision_at_5,evidence_f1_at_5
+AVeriTeC,hybrid top-5 (baseline),437,0.4343,0.1817,0.2377
+AVeriTeC,hybrid top-50 + cross-encoder rerank -> top-5,437,0.4814,0.1995,0.2621
+FEVER (expanded),hybrid top-5 (baseline),397,0.6715,0.1773,0.264
+FEVER (expanded),hybrid top-50 + cross-encoder rerank -> top-5,397,0.7631,0.2106,0.3089

@@ -1,0 +1,72 @@
+[
+ {
+  "experiment": "FEVER retrieval eval (BM25/dense/hybrid, 397 gold-evidence claims)",
+  "status": "completed",
+  "data": "real (fever.ai)"
+ },
+ {
+  "experiment": "FEVER verdict classification (600 claims, 5 systems + ablations)",
+  "status": "completed",
+  "data": "real (fever.ai)"
+ },
+ {
+  "experiment": "FEVER two-stage retrieval (cross-encoder rerank of depth-50 pool): retrieval + verdict impact, 600 claims",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC conflict-rule study (threshold grid selected on 600 train claims, evaluated on 500 dev claims)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC two-stage retrieval (cross-encoder rerank of depth-50 pool): retrieval + 4-way verdict impact, 500 claims",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC retrieval eval (500 claims, 7,022-doc shared corpus)",
+  "status": "completed",
+  "data": "real (github.com/MichSchli/AVeriTeC)"
+ },
+ {
+  "experiment": "AVeriTeC 4-way verdict classification (500 claims, 5 systems + ablations)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC India subset (n=59)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC narrative clustering vs real labels (NMI location/claim-type/verdict)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC T1 evidence-timing characterisation (500 claims, URL-derived dates)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC T2/T3 temporal ablations (leakage removal + contemporaneous bound, 500 claims)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC real evidence graph + source-provenance analysis (500 claims, real URLs/domains/dates)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "FactDrill dataset characterization (13,796 real items, EN+HI)",
+  "status": "completed",
+  "data": "real (Zenodo 10.5281/zenodo.5854856)"
+ },
+ {
+  "experiment": "FactDrill claim-to-fact-check retrieval, leaky vs de-leaked, EN+HI (800 real claims/setting, 13,796-doc corpus)",
+  "status": "completed",
+  "data": "real (Zenodo 10.5281/zenodo.5854856)"
+ }
+]

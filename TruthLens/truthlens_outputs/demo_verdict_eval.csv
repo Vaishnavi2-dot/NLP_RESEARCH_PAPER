@@ -1,0 +1,9 @@
+system,task,accuracy,macro_f1
+Sys0 Binary text classifier,binary fake/real,0.516,0.508
+Sys1 4-way text classifier,4-way claim verdict,0.548,0.42
+Sys2 Retrieval + surface heuristic (no NLI),4-way claim verdict,0.645,0.407
+Sys3 Retrieval + NLI (top-1),4-way claim verdict,0.677,0.478
+Sys4 TruthLens (full),4-way claim verdict,0.645,0.571
+Sys4 ablation: BM25-only,4-way claim verdict,0.71,0.662
+Sys4 ablation: dense-only,4-way claim verdict,0.613,0.541
+Sys4 ablation: no conflict label,4-way claim verdict,0.645,0.429

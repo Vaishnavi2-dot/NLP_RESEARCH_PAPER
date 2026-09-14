@@ -1,0 +1,4 @@
+conflict_rule,accuracy,macro_f1,n_predicted_conflicting,gold_conflicting
+off (never predict Conflicting),0.498,0.331,0,38
+blunt (any ent+con co-occurrence),0.472,0.334,26,38
+"gated (min_prob=0.5, max_margin=1.0, chosen on train)",0.474,0.336,25,38

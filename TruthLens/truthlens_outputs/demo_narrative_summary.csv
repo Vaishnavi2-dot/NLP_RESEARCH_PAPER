@@ -1,0 +1,9 @@
+cluster,size,top_terms,dominant_gold_event,verdict_distribution
+0,2,union bifurcated territory,A370_2019,"{'Supported': 1, 'Refuted': 1}"
+1,4,lockdown nationwide 2020,COVID_LOCKDOWN,"{'Refuted': 2, 'Supported': 2}"
+2,7,क 3 chandrayaan,CHANDRAYAAN_3,"{'Conflicting Evidence': 3, 'Refuted': 3, 'Not Enough Evidence': 1}"
+3,1,council security pakistan,A370_2019,{'Supported': 1}
+4,4,article revoked 370,A370_2019,"{'Not Enough Evidence': 2, 'Refuted': 1, 'Supported': 1}"
+5,5,seats won bjp,LS_2024,"{'Supported': 2, 'Refuted': 2, 'Not Enough Evidence': 1}"
+6,4,accident balasore train,BALASORE_2023,"{'Conflicting Evidence': 2, 'Supported': 2}"
+7,4,rescue days workers,SILKYARA_2023,"{'Refuted': 3, 'Supported': 1}"
