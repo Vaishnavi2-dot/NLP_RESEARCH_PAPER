@@ -19,9 +19,13 @@ FD_DIR = os.path.join(DATA, "factdrill")
 OUT_REC = os.path.join(DATA, "factdrill_records.jsonl")
 OUT_CORPUS = os.path.join(DATA, "factdrill_corpus.jsonl")
 
-if os.path.exists(OUT_REC):
+_outputs = [OUT_REC, OUT_CORPUS]
+if all(os.path.exists(f) for f in _outputs):
     print("FactDrill preparation already done - skipping")
     sys.exit(0)
+_missing = [f for f in _outputs if not os.path.exists(f)]
+if len(_missing) < len(_outputs):
+    print("rebuilding: missing", ", ".join(os.path.basename(f) for f in _missing))
 
 def clean_text(x):
     if not isinstance(x, str) or not x.strip():
@@ -43,8 +47,14 @@ for path in sorted(glob.glob(os.path.join(FD_DIR, "*.xlsx"))):
     try:
         df = pd.read_excel(path)
     except Exception as e:
-        print("skip", site, e)
-        continue
+        # Do not skip. A dropped workbook silently changes the per-language and
+        # per-site counts that Part 12 reports, and shifts the corpus every
+        # retrieval number is measured against. Better to fail than to emit a
+        # plausible-looking partial dataset.
+        sys.exit(f"FAILED to read {os.path.basename(path)}: {e}\n"
+                 "Re-download it from the Zenodo record (DOI 10.5281/zenodo.5854856) "
+                 "and re-run. Preparation aborted rather than writing a partial "
+                 "dataset that would silently change the reported counts.")
     for _, row in df.iterrows():
         claim = clean_text(row.get("claim"))
         content = clean_text(row.get("content"))
@@ -58,6 +68,10 @@ for path in sorted(glob.glob(os.path.join(FD_DIR, "*.xlsx"))):
         corpus.append(dict(id=f"FD{len(corpus):05d}", text=content[:4000],
                            site=site, lang=lang, link=rec["link"],
                            title=title, publish_date=rec["publish_date"]))
+
+if not records:
+    sys.exit(f"no records parsed from {FD_DIR} - expected the FactDrill xlsx files "
+             "there (see README section 4). Refusing to write empty outputs.")
 
 with open(OUT_REC, "w", encoding="utf-8") as f:
     for r in records:

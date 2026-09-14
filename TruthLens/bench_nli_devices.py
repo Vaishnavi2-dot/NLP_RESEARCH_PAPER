@@ -22,27 +22,54 @@ HYP  = ["Colin Kaepernick became a starting quarterback during the 49ers 63rd se
         "Roald Dahl was a novelist.",
         "Greville Janner was never elected to Parliament."]*32
 
+def available_devices():
+    # Build the list from what this host actually has, so a CUDA box benchmarks
+    # CUDA and never attempts a guaranteed-failing MPS run (and vice versa).
+    devs = ["cpu"]
+    if torch.cuda.is_available():
+        devs.append("cuda")
+    elif getattr(torch.backends, "mps", None) is not None and torch.backends.mps.is_available():
+        devs.append("mps")
+    return devs
+
+
+def _sync(dev):
+    # Both accelerators are asynchronous: without a sync we would time the queue,
+    # not the work.
+    if dev == "cuda":
+        torch.cuda.synchronize()
+    elif dev == "mps":
+        torch.mps.synchronize()
+
+
 def bench(name, dev, n=96, batch=32, ml=192):
+    accel = dev in ("cuda", "mps")
     tok = AutoTokenizer.from_pretrained(name)
     mdl = AutoModelForSequenceClassification.from_pretrained(name).eval().to(dev)
-    if dev=="mps": mdl = mdl.to(torch.float16)
+    if accel:
+        mdl = mdl.to(torch.float16)      # fp16 helps on an accelerator, hurts on CPU
     # warmup
-    inp = tok(PREM[:8], HYP[:8], truncation=True, max_length=ml, padding=True, return_tensors="pt").to(dev)
+    inp = tok(PREM[:8], HYP[:8], truncation=True, max_length=ml, padding=True,
+              return_tensors="pt").to(dev)
     with torch.no_grad(): mdl(**inp)
-    if dev=="mps": torch.mps.synchronize()
-    t0=time.time()
-    for i in range(0,n,batch):
-        inp = tok(PREM[i:i+batch], HYP[i:i+batch], truncation=True, max_length=ml, padding=True, return_tensors="pt").to(dev)
+    _sync(dev)
+    t0 = time.time()
+    for i in range(0, n, batch):
+        inp = tok(PREM[i:i+batch], HYP[i:i+batch], truncation=True, max_length=ml,
+                  padding=True, return_tensors="pt").to(dev)
         with torch.no_grad(): mdl(**inp)
-    if dev=="mps": torch.mps.synchronize()
-    dt=time.time()-t0
-    print(f"  {dev:4s} fp{'16' if dev=='mps' else '32'}: {n/dt:7.1f} pairs/sec", flush=True)
+    _sync(dev)
+    dt = time.time() - t0
+    print(f"  {dev:4s} fp{'16' if accel else '32'}: {n/dt:7.1f} pairs/sec", flush=True)
     del mdl
-    if dev=="mps": torch.mps.empty_cache()
-    return n/dt
+    if dev == "cuda": torch.cuda.empty_cache()
+    elif dev == "mps": torch.mps.empty_cache()
+    return n / dt
 
+DEVICES = available_devices()
+print("benchmarking on:", ", ".join(DEVICES))
 for m in sys.argv[1:]:
     print(f"\n### {m}", flush=True)
-    for dev in ["cpu","mps"]:
+    for dev in DEVICES:
         try: bench(m, dev)
         except Exception as e: print(f"  {dev}: FAILED {type(e).__name__}: {str(e)[:120]}", flush=True)

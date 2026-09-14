@@ -38,10 +38,19 @@ under 100 chars, keep the original.
 
 Measured effect of de-leaking on the corpus:
 
-- articles changed: 11,804 / 13,796 (85.6%)
-- mean article length: 2,584 -> 1,838 chars
-- residual verbatim leakage: **89.8% -> 4.7%**
+- articles changed: 11,960 / 13,796 (86.7%)
+- mean article length: 2,584 -> 1,900 chars
+- residual verbatim leakage: **89.8% -> 3.6%**
 - documents emptied: 0
+
+**Match the FULL claim before cutting its full length.** An earlier version located the
+claim with a 200-character probe but then removed `len(claim)` characters. For any claim
+longer than the probe whose prefix alone matched, that deleted unrelated article text —
+1,311 articles were over-cut this way. Prefer an exact full-claim match; fall back to the
+probe only if that fails, and then remove *only the probe*. Fixing this both reduced
+over-removal (mean length 1,838 -> 1,900) and, because less legitimate text was
+destroyed, *lowered* residual leakage (4.7% -> 3.6%) and raised de-leaked hit@5 by
+roughly 0.02-0.04 across languages and retrievers.
 
 ## The general lesson
 

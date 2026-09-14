@@ -16,10 +16,28 @@ Run2 looks like it is testing the fix. It is not. The symptom is a bug that
 "won't go away" across restarts, which is the same class as debugging a backend
 whose process predates the edit.
 
+## It is not only Ctrl-C — guard every abnormal exit
+
+The first fix only caught `KeyboardInterrupt`, and the trap sprang again within the
+hour. A `finally:` block that writes unconditionally also fires when:
+
+- the **kernel dies** (nbclient raises `DeadKernelError`) — e.g. an MPS out-of-memory
+  kill during a large encode, which produces no Python traceback at all;
+- the process takes **SIGPIPE**, e.g. `python run_notebook.py | head -30`;
+- any other unexpected exception unwinds.
+
+Each of those wrote a *stale* in-memory notebook over a freshly regenerated file, and
+the next run then executed old code while looking like it ran the new code. The tell is
+brutal to spot: the run behaves exactly as before your fix, and
+`grep -c '<your new token>' the.ipynb` returns 0 while the same grep on
+`build_notebook.py` returns a positive number.
+
 ## Fixes applied
 
-- `except KeyboardInterrupt: write_back = False` — an interrupted run leaves the
-  source notebook untouched.
+- Write back **only** on clean completion, or on `CellExecutionError` (a real per-cell
+  failure whose traceback is worth keeping). `KeyboardInterrupt` and a catch-all
+  `except BaseException` both leave the file alone and print
+  `NOT writing back ... regenerate with build_notebook.py before retrying`.
 - Regenerate (`python build_notebook.py`) and **verify the fix is present in the
   `.ipynb`** (`grep -c` for a token from the change) immediately before launching.
 - Because `build_notebook.py` is the source of truth, edit *it*, never the `.ipynb`.

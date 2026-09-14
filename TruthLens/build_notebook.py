@@ -85,7 +85,7 @@ if USE_TRANSFORMERS:
             print("Transformer stack unavailable, running with fallbacks:", e)
 print("Full transformer mode:", TRANSFORMERS_OK)
 
-import pandas as pd, numpy as np, re, json, math, random, time, heapq
+import pandas as pd, numpy as np, re, json, math, random, time, heapq, hashlib
 from datetime import date
 from collections import Counter, defaultdict
 EXPERIMENT_REGISTRY = []      # every real experiment appends its status here
@@ -133,6 +133,21 @@ NLI_MODEL_NAME = {"strong": NLI_MODEL_STRONG, "small": NLI_MODEL_SMALL,
                   "multilingual": NLI_MODEL_MULTILINGUAL}[NLI_TIER]
 # fp16 on accelerators only; fp16 on CPU is slower, not faster.
 TORCH_DTYPE = "float16" if DEVICE in ("cuda", "mps") else "float32"
+
+def _free_accelerator():
+    # Release cached blocks. Several cells hold two or three models on the device
+    # at once; without this, a large encode on top of them can take the kernel down
+    # with no traceback at all (it is killed, not raised).
+    if not TRANSFORMERS_OK:
+        return
+    try:
+        if DEVICE == "cuda":
+            torch.cuda.empty_cache()
+        elif DEVICE == "mps":
+            torch.mps.empty_cache()
+    except Exception:
+        pass
+
 print(f"Device: {DEVICE} | NLI tier: {NLI_TIER} | NLI model: {NLI_MODEL_NAME}")
 
 DATA_DIR = os.path.join(os.getcwd(), "data")
@@ -613,10 +628,19 @@ class TextEncoder:
             try:
                 from sentence_transformers import SentenceTransformer
                 self.st = SentenceTransformer(model_name, device=DEVICE)
+                self.model_name = model_name
                 self.kind = "minilm"
                 print(f"Dense encoder: multilingual MiniLM on {DEVICE} (full mode)")
             except Exception as e:
-                print("sentence-transformers unavailable -> TF-IDF fallback:", e)
+                # Do NOT silently fall back in full mode. TRANSFORMERS_OK only records
+                # that the imports succeeded; a download / OOM / network failure here
+                # would otherwise produce TF-IDF vectors that get written to caches and
+                # reported as transformer results. Light mode is the explicit opt-in.
+                raise RuntimeError(
+                    f"Dense encoder {model_name} failed to load in full mode: {e}. "
+                    "Set TRUTHLENS_LIGHT=1 (or USE_TRANSFORMERS=False) to run the "
+                    "TF-IDF fallback deliberately; it will be tagged 'light' in every "
+                    "cache key and must not be reported as a full-mode result.") from e
         if self.kind == "tfidf":
             from sklearn.feature_extraction.text import TfidfVectorizer
             self.word_vec = TfidfVectorizer(analyzer="word", token_pattern=r"\w+",
@@ -634,13 +658,36 @@ class TextEncoder:
         # Corpus-scale encoding: batched, with a progress bar once the corpus is
         # big enough that the user would otherwise think the cell had hung.
         # Kept separate from encode() so single-query latency is unaffected.
+        #
+        # Memory hygiene matters here. Later cells (reranking) hold the NLI model
+        # and a cross-encoder on the accelerator at the same time, and encoding a
+        # 2e5-document corpus alongside them killed the kernel outright with no
+        # Python traceback. So: release cached accelerator blocks first, shrink the
+        # batch for large corpora, and encode in chunks so peak allocation stays
+        # bounded regardless of corpus size.
         texts = list(texts)
-        if self.kind == "minilm":
+        if self.kind != "minilm":
+            return self.encode(texts)
+        _free_accelerator()
+        n = len(texts)
+        if n > 50000:
+            batch_size = min(batch_size, 64)
+        elif n > 10000:
+            batch_size = min(batch_size, 128)
+        CHUNK = 20000
+        if n <= CHUNK:
             return self.st.encode(texts, normalize_embeddings=True,
                                   batch_size=batch_size,
-                                  show_progress_bar=len(texts) > 5000,
+                                  show_progress_bar=n > 5000,
                                   convert_to_numpy=True)
-        return self.encode(texts)
+        out = []
+        for i in range(0, n, CHUNK):
+            out.append(self.st.encode(texts[i:i + CHUNK], normalize_embeddings=True,
+                                      batch_size=batch_size, show_progress_bar=False,
+                                      convert_to_numpy=True).astype(np.float32))
+            _free_accelerator()
+            print(f"    encoded {min(i + CHUNK, n)}/{n}", flush=True)
+        return np.vstack(out)
 
     def encode(self, texts):
         if self.kind == "minilm":
@@ -689,7 +736,16 @@ class HybridRetriever:
         vecs = None
         emb_path = None
         if cache_key:
-            sig = f"{cache_key}_{encoder.kind}_{len(self.texts)}"
+            # The key must bind to what was actually encoded. Document count alone is
+            # not enough: a re-sampled distractor set or regenerated source data can
+            # keep the same length while changing every vector, and the stale cache
+            # would then be paired with new texts and silently corrupt retrieval.
+            _h = hashlib.sha1()
+            _h.update(getattr(encoder, "model_name", encoder.kind).encode())
+            for _t in self.texts:
+                _h.update(_t.encode("utf-8", "replace"))
+                _h.update(b"\x00")
+            sig = f"{cache_key}_{encoder.kind}_{len(self.texts)}_{_h.hexdigest()[:12]}"
             emb_path = os.path.join(CACHE_DIR, f"emb_{sig}.npy")
             if not FORCE_RERUN and os.path.exists(emb_path):
                 vecs = np.load(emb_path)
@@ -880,7 +936,12 @@ class NLIJudge:
                 self.kind = "transformer"
                 print(f"NLI judge: {model_name} on {DEVICE} ({TORCH_DTYPE}, tier={NLI_TIER})")
             except Exception as e:
-                print("NLI model unavailable -> heuristic judge:", e)
+                # Same reasoning as TextEncoder: a heuristic judge silently standing in
+                # for a transformer would corrupt every verdict number downstream.
+                raise RuntimeError(
+                    f"NLI model {model_name} failed to load in full mode: {e}. "
+                    "Set TRUTHLENS_LIGHT=1 to use the heuristic judge deliberately."
+                    ) from e
         else:
             print("NLI judge: transparent heuristic (light mode)")
 
@@ -1641,6 +1702,14 @@ if fever_systems is None:
         for c in FEVER_SAMPLE:
             retrieved = fever_retriever.search(c["claim"], k=TOP_K, mode=mode)
             ev_texts = [FEVER_MAIN_CORPUS[fev_id2idx[r["id"]]]["text"] for r in retrieved]
+            if not ev_texts:
+                # BM25 returns nothing when no query term is in the vocabulary. That is
+                # an abstention, not a crash: without it the whole ablation aborts on a
+                # single unlucky claim.
+                preds_sys3.append("Not Enough Evidence")
+                preds_sys4.append("Not Enough Evidence")
+                preds_sys2.append("Not Enough Evidence")
+                continue
             judgments = judge_full.judge_many(c["claim"], ev_texts)
             # Sys3: standard RAG+NLI - verdict from the single top-1 evidence
             lab3 = judgments[0][0]
@@ -1914,6 +1983,7 @@ if av_cache is None:
 else:
     print("AVeriTeC retrieval eval loaded from cache")
 AV_RETRIEVAL = pd.DataFrame(av_cache["retriever_modes"]).T
+AV_RETRIEVAL.index.name = "mode"        # otherwise the CSV ships a nameless index column
 AV_RETRIEVAL.to_csv(os.path.join(OUT_DIR, "averitec_retrieval_eval.csv"))
 display(AV_RETRIEVAL)
 """)
@@ -1969,6 +2039,12 @@ if av_systems is None:
         for c in AV_DEV:
             retrieved = av_retriever.search(c["claim"], k=TOP_K, mode=mode)
             ev_texts = [AV_CORPUS[int(r["id"])]["text"] for r in retrieved]
+            if not ev_texts:
+                preds_sys2.append("Not Enough Evidence")
+                preds_sys3.append("Not Enough Evidence")
+                preds_sys4.append("Not Enough Evidence")
+                preds_sys4_nconf.append("Not Enough Evidence")
+                continue
             judgments = judge_full.judge_many(c["claim"], ev_texts)
             preds_sys2.append(sys2_pred_text(c["claim"], ev_texts[0]))
             lab3 = judgments[0][0]
@@ -2720,10 +2796,18 @@ def strip_claim_from_article(claim, text, min_len=40):
     if not claim or len(claim) < min_len:
         return text
     n_claim, n_text = _norm_ws(claim), _norm_ws(text)
-    probe = n_claim[:200]
-    pos = n_text.find(probe)
+    # Prefer an exact full-claim match. Only if that fails do we fall back to a
+    # 200-char probe -- and then we remove ONLY the probe, never the full claim
+    # length. Cutting len(n_claim) after matching just a prefix would delete
+    # unrelated article text and fake a de-leak.
+    pos = n_text.find(n_claim)
+    match_len = len(n_claim)
     if pos < 0:
-        return text
+        probe = n_claim[:200]
+        pos = n_text.find(probe)
+        if pos < 0:
+            return text
+        match_len = len(probe)
     # map normalised offsets back to raw offsets by walking both strings
     raw_start = raw_end = None
     ni = 0
@@ -2739,7 +2823,7 @@ def strip_claim_from_article(claim, text, min_len=40):
             ni += 1
         if raw_start is None and ni > pos:
             raw_start = ri
-        if ni >= pos + len(n_claim):
+        if ni >= pos + match_len:
             raw_end = ri + 1
             break
     if raw_start is None:

@@ -56,26 +56,41 @@ def main():
         record_timing=True,
     )
 
+    # Write back ONLY on an outcome that actually produced results: a clean run, or
+    # a run where a specific cell raised (worth capturing, since the traceback is the
+    # useful artifact). Every other exit -- interrupt, dead kernel, SIGPIPE, any
+    # unexpected exception -- leaves the file alone.
+    #
+    # This matters more than it looks. The in-memory notebook is whatever was loaded
+    # at startup. If build_notebook.py regenerated the file in the meantime, an
+    # unconditional write-back silently reverts it, and the NEXT run then executes
+    # stale code while appearing to run the new version. That has already happened
+    # twice here: once via Ctrl-C and once via a kernel that died mid-encode.
     t0 = time.time()
     status = 0
-    write_back = True
+    write_back = False
     try:
         client.execute()
+        write_back = True
     except CellExecutionError as e:
         status = 1
+        write_back = True          # a real per-cell failure; keep the traceback
         print(f"\n!!! CELL EXECUTION FAILED: {e}", flush=True)
     except KeyboardInterrupt:
-        # Do NOT write back on interrupt. The in-memory notebook is whatever was
-        # loaded at startup; writing it would silently overwrite a notebook that
-        # build_notebook.py may have regenerated since, and the next run would
-        # then execute stale code while appearing to run the new version.
         status = 130
-        write_back = False
         print("\ninterrupted - source notebook left untouched", flush=True)
+    except BaseException as e:     # dead kernel, SIGPIPE, anything else
+        status = 2
+        print(f"\n!!! ABORTED ({type(e).__name__}: {e}) - source notebook left untouched",
+              flush=True)
     finally:
         if write_back:
             nbformat.write(nb, out_path)
             print(f"\nwrote {out_path} after {time.time()-t0:.0f}s", flush=True)
+        else:
+            print(f"NOT writing back after {time.time()-t0:.0f}s "
+                  f"- regenerate with `python build_notebook.py` before retrying",
+                  flush=True)
 
     # summarise which cells actually ran and which errored
     ran = sum(1 for c in nb.cells

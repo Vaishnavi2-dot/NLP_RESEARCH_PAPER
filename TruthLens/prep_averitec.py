@@ -15,9 +15,16 @@ OUT_DEV = os.path.join(DATA, "averitec_dev_records.json")
 OUT_TRAIN = os.path.join(DATA, "averitec_train_records.json")
 OUT_CORPUS = os.path.join(DATA, "averitec_corpus.jsonl")
 
-if os.path.exists(OUT_DEV) and os.path.exists(OUT_CORPUS):
+# Every output must exist, not just some: the notebook needs the train records too,
+# and an interrupted run that left one file missing would otherwise be reported as
+# complete and fail much later inside the notebook.
+_outputs = [OUT_DEV, OUT_TRAIN, OUT_CORPUS]
+if all(os.path.exists(f) for f in _outputs):
     print("AVeriTeC preparation already done - skipping")
     sys.exit(0)
+_missing = [f for f in _outputs if not os.path.exists(f)]
+if len(_missing) < len(_outputs):
+    print("rebuilding: missing", ", ".join(os.path.basename(f) for f in _missing))
 
 LABEL_MAP = {"Supported": "Supported", "Refuted": "Refuted",
              "Not Enough Evidence": "Not Enough Evidence",

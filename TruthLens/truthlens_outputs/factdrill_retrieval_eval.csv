@@ -5,9 +5,9 @@ leaky,english,hybrid,0.99,400
 leaky,hindi,bm25,0.9925,400
 leaky,hindi,dense,0.8775,400
 leaky,hindi,hybrid,0.98,400
-de_leaked,english,bm25,0.7975,400
-de_leaked,english,dense,0.4275,400
-de_leaked,english,hybrid,0.725,400
-de_leaked,hindi,bm25,0.64,400
-de_leaked,hindi,dense,0.3475,400
-de_leaked,hindi,hybrid,0.635,400
+de_leaked,english,bm25,0.825,400
+de_leaked,english,dense,0.47,400
+de_leaked,english,hybrid,0.765,400
+de_leaked,hindi,bm25,0.66,400
+de_leaked,hindi,dense,0.3875,400
+de_leaked,hindi,hybrid,0.67,400

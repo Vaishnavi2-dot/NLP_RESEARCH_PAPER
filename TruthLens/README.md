@@ -110,12 +110,15 @@ Five traps. Each one will produce a confident, wrong statement if ignored.
 | FEVER gold-pages-only | 6,934 | 0.764 | 0.724 | 0.788 | — |
 | FEVER expanded | 207,089 | 0.627 | 0.590 | 0.669 | **0.761** |
 | AVeriTeC | 7,022 | 0.398 | 0.411 | 0.415 | **0.485** |
-| FactDrill de-leaked EN | 13,796 | **0.798** | 0.428 | 0.725 | — |
-| FactDrill de-leaked HI | 13,796 | **0.640** | 0.348 | 0.635 | — |
+| FactDrill de-leaked EN | 13,796 | **0.825** | 0.470 | 0.765 | — |
+| FactDrill de-leaked HI | 13,796 | 0.660 | 0.388 | **0.670** | — |
 
-Hybrid wins on FEVER and AVeriTeC; **BM25 wins on FactDrill**, because the multilingual
-encoder is weak on long Indian-language articles and RRF fusion with a weak dense arm
-drags hybrid down. The English → Hindi gap is real and is the multilingual finding.
+Hybrid wins on FEVER and AVeriTeC. On FactDrill it is **mixed**: BM25 clearly wins in
+English (0.825 vs 0.765), while in Hindi hybrid edges ahead (0.670 vs 0.660). The
+multilingual encoder is much weaker on long Indian-language articles (dense 0.470 EN /
+0.388 HI), so RRF fusion with a weak dense arm buys little and in English actively
+costs. The **English → Hindi gap** (0.825 → 0.660 on BM25) is the multilingual finding,
+and it is consistent across all three retrievers.
 
 **Other measured results:** conflict-aware verdicts (Conflicting-F1 ≈ 0.09 — a negative
 result), temporal robustness (only 9 % of AVeriTeC gold evidence provably pre-dates its

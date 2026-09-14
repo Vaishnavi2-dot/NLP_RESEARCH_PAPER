@@ -118,14 +118,17 @@ hypothesis holds. Precision@5 and Evidence-F1@5 are in
 |---|---|---|---|---|
 | leaky *(artefact)* | EN | 1.000 | 0.973 | 0.990 |
 | leaky *(artefact)* | HI | 0.993 | 0.878 | 0.980 |
-| **de-leaked** | **EN** | **0.798** | 0.428 | 0.725 |
-| **de-leaked** | **HI** | **0.640** | 0.348 | 0.635 |
+| **de-leaked** | **EN** | **0.825** | 0.470 | 0.765 |
+| **de-leaked** | **HI** | 0.660 | 0.388 | **0.670** |
 
-Two real findings once the leakage is removed (§5.2): a clear **English → Hindi gap**
-(BM25 0.798 → 0.640), and — unlike FEVER and AVeriTeC — **BM25 beats hybrid here**. The
-multilingual MiniLM encoder is weak on long Indian-language fact-check articles (dense
-0.428 EN / 0.348 HI), and RRF fusion with a weak dense arm drags hybrid below pure
-lexical retrieval. That is a concrete, actionable result for the Indian-language scope.
+Two real findings once the leakage is removed (§5.2). First, a clear **English → Hindi
+gap** (BM25 0.825 → 0.660), consistent across all three retrievers — the concrete,
+actionable result for the Indian-language scope. Second, **the hybrid advantage does not
+transfer**: unlike FEVER and AVeriTeC, BM25 clearly beats hybrid in English
+(0.825 vs 0.765) and hybrid only just edges BM25 in Hindi (0.670 vs 0.660). The
+multilingual MiniLM encoder is weak on long Indian-language fact-check articles
+(dense 0.470 EN / 0.388 HI), so RRF fusion with a weak dense arm buys little and in
+English actively costs. A stronger Indic encoder is the obvious next lever here.
 
 ### 3.5 Conflict-aware verdicts — does the headline novelty earn its place?
 
@@ -244,7 +247,7 @@ Each would have yielded a plausible-looking but misleading number.
 2. **FactDrill's `claim` is copied from its own article** — the claim's first 120 chars
    appear verbatim in 89.8 % of gold articles, so retrieval was largely duplicate
    detection (leaky BM25 hit@5 = **1.000**). A de-leaked corpus removes the claim span
-   from its own article (verbatim leakage 89.8 % → 4.7 %, 0 documents emptied); both
+   from its own article (verbatim leakage 89.8 % → 3.6 %, 0 documents emptied); both
    settings reported, de-leaked is the result.
 3. **AVeriTeC evidence is retrospective** and its dates are mostly *archive snapshots*,
    which are one-sided: they can prove pre-dating, never post-dating. The analysis
