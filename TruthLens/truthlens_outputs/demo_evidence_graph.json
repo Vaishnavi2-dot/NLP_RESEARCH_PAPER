@@ -1,0 +1,1416 @@
+{
+  "nodes": [
+    {
+      "id": "P01",
+      "kind": "post",
+      "text": "Remembering this day in 2019: PM Modi govt revoked Article 3",
+      "event": "A370_2019"
+    },
+    {
+      "id": "P02",
+      "kind": "post",
+      "text": "Breaking: Article 370 was revoked in 2020 and J&K has been m",
+      "event": "A370_2019"
+    },
+    {
+      "id": "P03",
+      "kind": "post",
+      "text": "Historic day! Chandrayaan-3's Vikram lander soft-landed near",
+      "event": "CHANDRAYAAN_3"
+    },
+    {
+      "id": "P04",
+      "kind": "post",
+      "text": "WhatsApp pe viral: Chandrayaan-3 ne Moon pe landing nahi ki,",
+      "event": "CHANDRAYAAN_3"
+    },
+    {
+      "id": "P05",
+      "kind": "post",
+      "text": "ISRO said Chandrayaan-3 cost Rs 1000 crore. Very costly miss",
+      "event": "CHANDRAYAAN_3"
+    },
+    {
+      "id": "P06",
+      "kind": "post",
+      "text": "Breaking: PM Modi announced a complete nationwide lockdown s",
+      "event": "COVID_LOCKDOWN"
+    },
+    {
+      "id": "P07",
+      "kind": "post",
+      "text": "The first COVID-19 case in India was reported in January 202",
+      "event": "COVID_LOCKDOWN"
+    },
+    {
+      "id": "P08",
+      "kind": "post",
+      "text": "BJP won 240 seats in the 2024 Lok Sabha elections. Congress ",
+      "event": "LS_2024"
+    },
+    {
+      "id": "P09",
+      "kind": "post",
+      "text": "Bhai kya scene hai. 2024 ke chunav me BJP ne 300 seats jeet ",
+      "event": "LS_2024"
+    },
+    {
+      "id": "P10",
+      "kind": "post",
+      "text": "Terrible news from Odisha. More than 280 people have died in",
+      "event": "BALASORE_2023"
+    },
+    {
+      "id": "P11",
+      "kind": "post",
+      "text": "The Balasore train accident was caused by a signal failure.",
+      "event": "BALASORE_2023"
+    },
+    {
+      "id": "P12",
+      "kind": "post",
+      "text": "All 41 workers trapped in the Silkyara tunnel were rescued a",
+      "event": "SILKYARA_2023"
+    },
+    {
+      "id": "P13",
+      "kind": "post",
+      "text": "The trapped workers in Uttarakhand were rescued using only m",
+      "event": "SILKYARA_2023"
+    },
+    {
+      "id": "P14",
+      "kind": "post",
+      "text": "WhatsApp pe aaya hai ki India me 2025 se internet band ho ja",
+      "event": "UNVERIFIED_RUMOUR"
+    },
+    {
+      "id": "P15",
+      "kind": "post",
+      "text": "Heard that the government is planning to announce a new educ",
+      "event": "UNVERIFIED_RUMOUR"
+    },
+    {
+      "id": "P16",
+      "kind": "post",
+      "text": "Emergency in India. Rs 500 and Rs 1000 notes are banned from",
+      "event": "DEMONETISATION_2016"
+    },
+    {
+      "id": "P17",
+      "kind": "post",
+      "text": "The state government said 288 people died in the Balasore tr",
+      "event": "BALASORE_2023"
+    },
+    {
+      "id": "P18",
+      "kind": "post",
+      "text": "चंद्रयान-3 ने 23 अगस्त 2023 को चंद्रमा के दक्षिणी ध्रुव के प",
+      "event": "CHANDRAYAAN_3"
+    },
+    {
+      "id": "P01_C1",
+      "kind": "claim",
+      "text": "PM Modi govt revoked Article 370 on 5 August 2019.",
+      "event": "A370_2019",
+      "gold": "Supported",
+      "verdict": "Not Enough Evidence",
+      "confidence": 0.985
+    },
+    {
+      "id": "A370_2019",
+      "kind": "event"
+    },
+    {
+      "id": "Article 370",
+      "kind": "entity"
+    },
+    {
+      "id": "Narendra Modi",
+      "kind": "entity"
+    },
+    {
+      "id": "E01",
+      "kind": "evidence",
+      "source": "PIB (Govt. of India)",
+      "sdate": "2019-08-05"
+    },
+    {
+      "id": "PIB (Govt. of India)",
+      "kind": "source",
+      "stype": "government"
+    },
+    {
+      "id": "E02",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2019-08-05"
+    },
+    {
+      "id": "The Hindu",
+      "kind": "source",
+      "stype": "news"
+    },
+    {
+      "id": "P01_C2",
+      "kind": "claim",
+      "text": "Jammu and Kashmir was bifurcated into two Union Territories.",
+      "event": "A370_2019",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.999
+    },
+    {
+      "id": "Jammu & Kashmir",
+      "kind": "entity"
+    },
+    {
+      "id": "E03",
+      "kind": "evidence",
+      "source": "PIB (Govt. of India)",
+      "sdate": "2019-10-31"
+    },
+    {
+      "id": "P01_C3",
+      "kind": "claim",
+      "text": "Pakistan raised the matter at the UN Security Council.",
+      "event": "A370_2019",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.999
+    },
+    {
+      "id": "Pakistan",
+      "kind": "entity"
+    },
+    {
+      "id": "E04",
+      "kind": "evidence",
+      "source": "Reuters",
+      "sdate": "2019-08-16"
+    },
+    {
+      "id": "Reuters",
+      "kind": "source",
+      "stype": "news"
+    },
+    {
+      "id": "P02_C1",
+      "kind": "claim",
+      "text": "Article 370 was revoked in 2020.",
+      "event": "A370_2019",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.998
+    },
+    {
+      "id": "E05",
+      "kind": "evidence",
+      "source": "Alt News",
+      "sdate": "2020-04-02"
+    },
+    {
+      "id": "Alt News",
+      "kind": "source",
+      "stype": "factcheck"
+    },
+    {
+      "id": "P02_C2",
+      "kind": "claim",
+      "text": "J&K has been made a single Union Territory.",
+      "event": "A370_2019",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.873
+    },
+    {
+      "id": "P03_C1",
+      "kind": "claim",
+      "text": "Chandrayaan-3's Vikram lander soft-landed near the lunar sou",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Supported",
+      "verdict": "Conflicting Evidence",
+      "confidence": 0.777
+    },
+    {
+      "id": "CHANDRAYAAN_3",
+      "kind": "event"
+    },
+    {
+      "id": "Vikram (lander)",
+      "kind": "entity"
+    },
+    {
+      "id": "E06",
+      "kind": "evidence",
+      "source": "ISRO (Govt. of India)",
+      "sdate": "2023-08-23"
+    },
+    {
+      "id": "ISRO (Govt. of India)",
+      "kind": "source",
+      "stype": "government"
+    },
+    {
+      "id": "E07",
+      "kind": "evidence",
+      "source": "BBC",
+      "sdate": "2023-08-23"
+    },
+    {
+      "id": "BBC",
+      "kind": "source",
+      "stype": "news"
+    },
+    {
+      "id": "P03_C2",
+      "kind": "claim",
+      "text": "India becomes the first country to land near the south pole ",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Supported",
+      "verdict": "Conflicting Evidence",
+      "confidence": 0.931
+    },
+    {
+      "id": "P04_C1",
+      "kind": "claim",
+      "text": "Chandrayaan-3 ne Moon pe landing nahi ki, ISRO ne mission fa",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.933
+    },
+    {
+      "id": "Chandrayaan-3",
+      "kind": "entity"
+    },
+    {
+      "id": "ISRO",
+      "kind": "entity"
+    },
+    {
+      "id": "E09",
+      "kind": "evidence",
+      "source": "PIB Fact Check",
+      "sdate": "2023-08-27"
+    },
+    {
+      "id": "PIB Fact Check",
+      "kind": "source",
+      "stype": "factcheck"
+    },
+    {
+      "id": "P04_C2",
+      "kind": "claim",
+      "text": "Aur lander ka naam Pragyan tha.",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.995
+    },
+    {
+      "id": "Pragyan (rover)",
+      "kind": "entity"
+    },
+    {
+      "id": "E10",
+      "kind": "evidence",
+      "source": "Alt News",
+      "sdate": "2023-08-25"
+    },
+    {
+      "id": "P05_C1",
+      "kind": "claim",
+      "text": "ISRO said Chandrayaan-3 cost Rs 1000 crore.",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 1.0
+    },
+    {
+      "id": "E08",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2023-08-22"
+    },
+    {
+      "id": "P06_C1",
+      "kind": "claim",
+      "text": "PM Modi announced a complete nationwide lockdown starting to",
+      "event": "COVID_LOCKDOWN",
+      "gold": "Supported",
+      "verdict": "Refuted",
+      "confidence": 0.837
+    },
+    {
+      "id": "COVID_LOCKDOWN",
+      "kind": "event"
+    },
+    {
+      "id": "E11",
+      "kind": "evidence",
+      "source": "PIB (Govt. of India)",
+      "sdate": "2020-03-24"
+    },
+    {
+      "id": "P07_C1",
+      "kind": "claim",
+      "text": "The first COVID-19 case in India was reported in January 202",
+      "event": "COVID_LOCKDOWN",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.999
+    },
+    {
+      "id": "COVID-19",
+      "kind": "entity"
+    },
+    {
+      "id": "E12",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2020-01-31"
+    },
+    {
+      "id": "P07_C2",
+      "kind": "claim",
+      "text": "The nationwide lockdown began on 25 March 2020.",
+      "event": "COVID_LOCKDOWN",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.998
+    },
+    {
+      "id": "P08_C1",
+      "kind": "claim",
+      "text": "BJP won 240 seats in the 2024 Lok Sabha elections.",
+      "event": "LS_2024",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.998
+    },
+    {
+      "id": "LS_2024",
+      "kind": "event"
+    },
+    {
+      "id": "BJP",
+      "kind": "entity"
+    },
+    {
+      "id": "Lok Sabha",
+      "kind": "entity"
+    },
+    {
+      "id": "E13",
+      "kind": "evidence",
+      "source": "Election Commission of India",
+      "sdate": "2024-06-04"
+    },
+    {
+      "id": "Election Commission of India",
+      "kind": "source",
+      "stype": "government"
+    },
+    {
+      "id": "P08_C2",
+      "kind": "claim",
+      "text": "Congress won 99 seats.",
+      "event": "LS_2024",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.999
+    },
+    {
+      "id": "Indian National Congress",
+      "kind": "entity"
+    },
+    {
+      "id": "P08_C3",
+      "kind": "claim",
+      "text": "Modi took oath as PM for a third term on 9 June 2024.",
+      "event": "LS_2024",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.999
+    },
+    {
+      "id": "E14",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2024-06-09"
+    },
+    {
+      "id": "P09_C1",
+      "kind": "claim",
+      "text": "2024 ke chunav me BJP ne 300 seats jeet li.",
+      "event": "LS_2024",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.995
+    },
+    {
+      "id": "E15",
+      "kind": "evidence",
+      "source": "PIB Fact Check",
+      "sdate": "2024-06-06"
+    },
+    {
+      "id": "P09_C2",
+      "kind": "claim",
+      "text": "Modi ji ne record bana diya.",
+      "event": "LS_2024",
+      "gold": "Not Enough Evidence",
+      "verdict": "Not Enough Evidence",
+      "confidence": 0.981
+    },
+    {
+      "id": "P10_C1",
+      "kind": "claim",
+      "text": "More than 280 people have died in the Balasore train acciden",
+      "event": "BALASORE_2023",
+      "gold": "Conflicting Evidence",
+      "verdict": "Conflicting Evidence",
+      "confidence": 0.741
+    },
+    {
+      "id": "BALASORE_2023",
+      "kind": "event"
+    },
+    {
+      "id": "Balasore",
+      "kind": "entity"
+    },
+    {
+      "id": "E16",
+      "kind": "evidence",
+      "source": "NDTV",
+      "sdate": "2023-06-03"
+    },
+    {
+      "id": "NDTV",
+      "kind": "source",
+      "stype": "news"
+    },
+    {
+      "id": "E17",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2023-06-04"
+    },
+    {
+      "id": "E18",
+      "kind": "evidence",
+      "source": "Reuters",
+      "sdate": "2023-06-12"
+    },
+    {
+      "id": "P10_C2",
+      "kind": "claim",
+      "text": "Rescue operations are still ongoing.",
+      "event": "BALASORE_2023",
+      "gold": "Not Enough Evidence",
+      "verdict": "Refuted",
+      "confidence": 0.756
+    },
+    {
+      "id": "P11_C1",
+      "kind": "claim",
+      "text": "The Balasore train accident was caused by a signal failure.",
+      "event": "BALASORE_2023",
+      "gold": "Not Enough Evidence",
+      "verdict": "Supported",
+      "confidence": 0.871
+    },
+    {
+      "id": "E19",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2023-06-23"
+    },
+    {
+      "id": "P12_C1",
+      "kind": "claim",
+      "text": "All 41 workers trapped in the Silkyara tunnel were rescued a",
+      "event": "SILKYARA_2023",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.998
+    },
+    {
+      "id": "SILKYARA_2023",
+      "kind": "event"
+    },
+    {
+      "id": "Silkyara tunnel",
+      "kind": "entity"
+    },
+    {
+      "id": "E20",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2023-11-28"
+    },
+    {
+      "id": "P13_C1",
+      "kind": "claim",
+      "text": "The trapped workers in Uttarakhand were rescued using only m",
+      "event": "SILKYARA_2023",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.998
+    },
+    {
+      "id": "Uttarakhand",
+      "kind": "entity"
+    },
+    {
+      "id": "E21",
+      "kind": "evidence",
+      "source": "The Hindu",
+      "sdate": "2023-11-29"
+    },
+    {
+      "id": "P13_C2",
+      "kind": "claim",
+      "text": "The rescue took just 10 days.",
+      "event": "SILKYARA_2023",
+      "gold": "Refuted",
+      "verdict": "Refuted",
+      "confidence": 0.944
+    },
+    {
+      "id": "P14_C1",
+      "kind": "claim",
+      "text": "WhatsApp pe aaya hai ki India me 2025 se internet band ho ja",
+      "event": "UNVERIFIED_RUMOUR",
+      "gold": "Not Enough Evidence",
+      "verdict": "Refuted",
+      "confidence": 0.754
+    },
+    {
+      "id": "UNVERIFIED_RUMOUR",
+      "kind": "event"
+    },
+    {
+      "id": "P15_C1",
+      "kind": "claim",
+      "text": "Heard that the government is planning to announce a new educ",
+      "event": "UNVERIFIED_RUMOUR",
+      "gold": "Not Enough Evidence",
+      "verdict": "Refuted",
+      "confidence": 0.829
+    },
+    {
+      "id": "P16_C1",
+      "kind": "claim",
+      "text": "Rs 500 and Rs 1000 notes are banned from tonight.",
+      "event": "DEMONETISATION_2016",
+      "gold": "Supported",
+      "verdict": "Not Enough Evidence",
+      "confidence": 0.997
+    },
+    {
+      "id": "DEMONETISATION_2016",
+      "kind": "event"
+    },
+    {
+      "id": "E23",
+      "kind": "evidence",
+      "source": "RBI (Govt. of India)",
+      "sdate": "2016-11-08"
+    },
+    {
+      "id": "RBI (Govt. of India)",
+      "kind": "source",
+      "stype": "government"
+    },
+    {
+      "id": "P17_C1",
+      "kind": "claim",
+      "text": "The state government said 288 people died in the Balasore tr",
+      "event": "BALASORE_2023",
+      "gold": "Conflicting Evidence",
+      "verdict": "Conflicting Evidence",
+      "confidence": 0.94
+    },
+    {
+      "id": "P17_C2",
+      "kind": "claim",
+      "text": "The CBI will investigate the accident.",
+      "event": "BALASORE_2023",
+      "gold": "Supported",
+      "verdict": "Supported",
+      "confidence": 0.98
+    },
+    {
+      "id": "CBI",
+      "kind": "entity"
+    },
+    {
+      "id": "P18_C1",
+      "kind": "claim",
+      "text": "चंद्रयान-3 ने 23 अगस्त 2023 को चंद्रमा के दक्षिणी ध्रुव के प",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Supported",
+      "verdict": "Conflicting Evidence",
+      "confidence": 0.662
+    },
+    {
+      "id": "P18_C2",
+      "kind": "claim",
+      "text": "भारत पहला देश है जिसने चंद्रमा के दक्षिणी ध्रुव के पास लैंडि",
+      "event": "CHANDRAYAAN_3",
+      "gold": "Supported",
+      "verdict": "Not Enough Evidence",
+      "confidence": 0.933
+    }
+  ],
+  "edges": [
+    {
+      "source": "P01",
+      "target": "P01_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P01",
+      "target": "P01_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P01",
+      "target": "P01_C3",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P02",
+      "target": "P02_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P02",
+      "target": "P02_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P03",
+      "target": "P03_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P03",
+      "target": "P03_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P04",
+      "target": "P04_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P04",
+      "target": "P04_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P05",
+      "target": "P05_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P06",
+      "target": "P06_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P07",
+      "target": "P07_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P07",
+      "target": "P07_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P08",
+      "target": "P08_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P08",
+      "target": "P08_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P08",
+      "target": "P08_C3",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P09",
+      "target": "P09_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P09",
+      "target": "P09_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P10",
+      "target": "P10_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P10",
+      "target": "P10_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P11",
+      "target": "P11_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P12",
+      "target": "P12_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P13",
+      "target": "P13_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P13",
+      "target": "P13_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P14",
+      "target": "P14_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P15",
+      "target": "P15_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P16",
+      "target": "P16_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P17",
+      "target": "P17_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P17",
+      "target": "P17_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P18",
+      "target": "P18_C1",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P18",
+      "target": "P18_C2",
+      "relation": "has_claim"
+    },
+    {
+      "source": "P01_C1",
+      "target": "A370_2019",
+      "relation": "about"
+    },
+    {
+      "source": "P01_C1",
+      "target": "Article 370",
+      "relation": "mentions"
+    },
+    {
+      "source": "P01_C1",
+      "target": "Narendra Modi",
+      "relation": "mentions"
+    },
+    {
+      "source": "P01_C1",
+      "target": "E01",
+      "relation": "cites"
+    },
+    {
+      "source": "P01_C1",
+      "target": "E02",
+      "relation": "cites"
+    },
+    {
+      "source": "E01",
+      "target": "PIB (Govt. of India)",
+      "relation": "published_in"
+    },
+    {
+      "source": "E02",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P01_C2",
+      "target": "A370_2019",
+      "relation": "about"
+    },
+    {
+      "source": "P01_C2",
+      "target": "Jammu & Kashmir",
+      "relation": "mentions"
+    },
+    {
+      "source": "P01_C2",
+      "target": "E03",
+      "relation": "cites"
+    },
+    {
+      "source": "E03",
+      "target": "PIB (Govt. of India)",
+      "relation": "published_in"
+    },
+    {
+      "source": "P01_C3",
+      "target": "A370_2019",
+      "relation": "about"
+    },
+    {
+      "source": "P01_C3",
+      "target": "Pakistan",
+      "relation": "mentions"
+    },
+    {
+      "source": "P01_C3",
+      "target": "E04",
+      "relation": "cites"
+    },
+    {
+      "source": "E04",
+      "target": "Reuters",
+      "relation": "published_in"
+    },
+    {
+      "source": "P02_C1",
+      "target": "A370_2019",
+      "relation": "about"
+    },
+    {
+      "source": "P02_C1",
+      "target": "Article 370",
+      "relation": "mentions"
+    },
+    {
+      "source": "P02_C1",
+      "target": "E01",
+      "relation": "cites"
+    },
+    {
+      "source": "P02_C1",
+      "target": "E02",
+      "relation": "cites"
+    },
+    {
+      "source": "P02_C1",
+      "target": "E05",
+      "relation": "cites"
+    },
+    {
+      "source": "E05",
+      "target": "Alt News",
+      "relation": "published_in"
+    },
+    {
+      "source": "P02_C2",
+      "target": "A370_2019",
+      "relation": "about"
+    },
+    {
+      "source": "P02_C2",
+      "target": "Jammu & Kashmir",
+      "relation": "mentions"
+    },
+    {
+      "source": "P02_C2",
+      "target": "E03",
+      "relation": "cites"
+    },
+    {
+      "source": "P03_C1",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P03_C1",
+      "target": "Vikram (lander)",
+      "relation": "mentions"
+    },
+    {
+      "source": "P03_C1",
+      "target": "E06",
+      "relation": "cites"
+    },
+    {
+      "source": "P03_C1",
+      "target": "E07",
+      "relation": "cites"
+    },
+    {
+      "source": "E06",
+      "target": "ISRO (Govt. of India)",
+      "relation": "published_in"
+    },
+    {
+      "source": "E07",
+      "target": "BBC",
+      "relation": "published_in"
+    },
+    {
+      "source": "P03_C2",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P03_C2",
+      "target": "E07",
+      "relation": "cites"
+    },
+    {
+      "source": "P04_C1",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P04_C1",
+      "target": "Chandrayaan-3",
+      "relation": "mentions"
+    },
+    {
+      "source": "P04_C1",
+      "target": "ISRO",
+      "relation": "mentions"
+    },
+    {
+      "source": "P04_C1",
+      "target": "E06",
+      "relation": "cites"
+    },
+    {
+      "source": "P04_C1",
+      "target": "E09",
+      "relation": "cites"
+    },
+    {
+      "source": "E09",
+      "target": "PIB Fact Check",
+      "relation": "published_in"
+    },
+    {
+      "source": "P04_C2",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P04_C2",
+      "target": "Pragyan (rover)",
+      "relation": "mentions"
+    },
+    {
+      "source": "P04_C2",
+      "target": "E10",
+      "relation": "cites"
+    },
+    {
+      "source": "E10",
+      "target": "Alt News",
+      "relation": "published_in"
+    },
+    {
+      "source": "P05_C1",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P05_C1",
+      "target": "Chandrayaan-3",
+      "relation": "mentions"
+    },
+    {
+      "source": "P05_C1",
+      "target": "ISRO",
+      "relation": "mentions"
+    },
+    {
+      "source": "P05_C1",
+      "target": "E08",
+      "relation": "cites"
+    },
+    {
+      "source": "E08",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P06_C1",
+      "target": "COVID_LOCKDOWN",
+      "relation": "about"
+    },
+    {
+      "source": "P06_C1",
+      "target": "Narendra Modi",
+      "relation": "mentions"
+    },
+    {
+      "source": "P06_C1",
+      "target": "E11",
+      "relation": "cites"
+    },
+    {
+      "source": "E11",
+      "target": "PIB (Govt. of India)",
+      "relation": "published_in"
+    },
+    {
+      "source": "P07_C1",
+      "target": "COVID_LOCKDOWN",
+      "relation": "about"
+    },
+    {
+      "source": "P07_C1",
+      "target": "COVID-19",
+      "relation": "mentions"
+    },
+    {
+      "source": "P07_C1",
+      "target": "E12",
+      "relation": "cites"
+    },
+    {
+      "source": "E12",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P07_C2",
+      "target": "COVID_LOCKDOWN",
+      "relation": "about"
+    },
+    {
+      "source": "P07_C2",
+      "target": "E11",
+      "relation": "cites"
+    },
+    {
+      "source": "P08_C1",
+      "target": "LS_2024",
+      "relation": "about"
+    },
+    {
+      "source": "P08_C1",
+      "target": "BJP",
+      "relation": "mentions"
+    },
+    {
+      "source": "P08_C1",
+      "target": "Lok Sabha",
+      "relation": "mentions"
+    },
+    {
+      "source": "P08_C1",
+      "target": "E13",
+      "relation": "cites"
+    },
+    {
+      "source": "E13",
+      "target": "Election Commission of India",
+      "relation": "published_in"
+    },
+    {
+      "source": "P08_C2",
+      "target": "LS_2024",
+      "relation": "about"
+    },
+    {
+      "source": "P08_C2",
+      "target": "Indian National Congress",
+      "relation": "mentions"
+    },
+    {
+      "source": "P08_C2",
+      "target": "E13",
+      "relation": "cites"
+    },
+    {
+      "source": "P08_C3",
+      "target": "LS_2024",
+      "relation": "about"
+    },
+    {
+      "source": "P08_C3",
+      "target": "Narendra Modi",
+      "relation": "mentions"
+    },
+    {
+      "source": "P08_C3",
+      "target": "E14",
+      "relation": "cites"
+    },
+    {
+      "source": "E14",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P09_C1",
+      "target": "LS_2024",
+      "relation": "about"
+    },
+    {
+      "source": "P09_C1",
+      "target": "BJP",
+      "relation": "mentions"
+    },
+    {
+      "source": "P09_C1",
+      "target": "E13",
+      "relation": "cites"
+    },
+    {
+      "source": "P09_C1",
+      "target": "E15",
+      "relation": "cites"
+    },
+    {
+      "source": "E15",
+      "target": "PIB Fact Check",
+      "relation": "published_in"
+    },
+    {
+      "source": "P09_C2",
+      "target": "LS_2024",
+      "relation": "about"
+    },
+    {
+      "source": "P09_C2",
+      "target": "Narendra Modi",
+      "relation": "mentions"
+    },
+    {
+      "source": "P10_C1",
+      "target": "BALASORE_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P10_C1",
+      "target": "Balasore",
+      "relation": "mentions"
+    },
+    {
+      "source": "P10_C1",
+      "target": "E16",
+      "relation": "cites"
+    },
+    {
+      "source": "P10_C1",
+      "target": "E17",
+      "relation": "cites"
+    },
+    {
+      "source": "P10_C1",
+      "target": "E18",
+      "relation": "cites"
+    },
+    {
+      "source": "E16",
+      "target": "NDTV",
+      "relation": "published_in"
+    },
+    {
+      "source": "E17",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "E18",
+      "target": "Reuters",
+      "relation": "published_in"
+    },
+    {
+      "source": "P10_C2",
+      "target": "BALASORE_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P11_C1",
+      "target": "BALASORE_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P11_C1",
+      "target": "Balasore",
+      "relation": "mentions"
+    },
+    {
+      "source": "P11_C1",
+      "target": "E19",
+      "relation": "cites"
+    },
+    {
+      "source": "E19",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P12_C1",
+      "target": "SILKYARA_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P12_C1",
+      "target": "Silkyara tunnel",
+      "relation": "mentions"
+    },
+    {
+      "source": "P12_C1",
+      "target": "E20",
+      "relation": "cites"
+    },
+    {
+      "source": "E20",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P13_C1",
+      "target": "SILKYARA_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P13_C1",
+      "target": "Uttarakhand",
+      "relation": "mentions"
+    },
+    {
+      "source": "P13_C1",
+      "target": "E21",
+      "relation": "cites"
+    },
+    {
+      "source": "E21",
+      "target": "The Hindu",
+      "relation": "published_in"
+    },
+    {
+      "source": "P13_C2",
+      "target": "SILKYARA_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P13_C2",
+      "target": "E20",
+      "relation": "cites"
+    },
+    {
+      "source": "P14_C1",
+      "target": "UNVERIFIED_RUMOUR",
+      "relation": "about"
+    },
+    {
+      "source": "P15_C1",
+      "target": "UNVERIFIED_RUMOUR",
+      "relation": "about"
+    },
+    {
+      "source": "P16_C1",
+      "target": "DEMONETISATION_2016",
+      "relation": "about"
+    },
+    {
+      "source": "P16_C1",
+      "target": "E23",
+      "relation": "cites"
+    },
+    {
+      "source": "E23",
+      "target": "RBI (Govt. of India)",
+      "relation": "published_in"
+    },
+    {
+      "source": "P17_C1",
+      "target": "BALASORE_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P17_C1",
+      "target": "Balasore",
+      "relation": "mentions"
+    },
+    {
+      "source": "P17_C1",
+      "target": "E16",
+      "relation": "cites"
+    },
+    {
+      "source": "P17_C1",
+      "target": "E17",
+      "relation": "cites"
+    },
+    {
+      "source": "P17_C1",
+      "target": "E18",
+      "relation": "cites"
+    },
+    {
+      "source": "P17_C2",
+      "target": "BALASORE_2023",
+      "relation": "about"
+    },
+    {
+      "source": "P17_C2",
+      "target": "CBI",
+      "relation": "mentions"
+    },
+    {
+      "source": "P17_C2",
+      "target": "E18",
+      "relation": "cites"
+    },
+    {
+      "source": "P17_C2",
+      "target": "E19",
+      "relation": "cites"
+    },
+    {
+      "source": "P18_C1",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P18_C1",
+      "target": "E06",
+      "relation": "cites"
+    },
+    {
+      "source": "P18_C1",
+      "target": "E07",
+      "relation": "cites"
+    },
+    {
+      "source": "P18_C2",
+      "target": "CHANDRAYAAN_3",
+      "relation": "about"
+    },
+    {
+      "source": "P18_C2",
+      "target": "E07",
+      "relation": "cites"
+    }
+  ]
+}

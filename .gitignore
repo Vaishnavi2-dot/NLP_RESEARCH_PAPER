@@ -1,0 +1,39 @@
+# ---------------------------------------------------------------------------
+# Datasets and build artifacts.
+#
+# None of this is committed: it is either re-downloadable from the URLs in
+# TruthLens/README.md or regenerable by the prep_*.py scripts, which are
+# deterministic (SEED=42) and idempotent. Committing it would add ~3.5 GB for
+# no reproducibility gain.
+# ---------------------------------------------------------------------------
+
+# Source archive of the inherited project (1.7 GB)
+TruthLens.zip
+*.crdownload
+
+# Raw + prepared datasets (~2.2 GB). Rebuild with:
+#   python prep_fever.py && python prep_fever_expand.py
+#   python prep_averitec.py && python prep_factdrill.py
+TruthLens/data/
+# ...but keep the manifest describing how the expanded FEVER corpus was built,
+# since it records the seed and page counts behind a reported number.
+!TruthLens/data/
+TruthLens/data/*
+!TruthLens/data/fever_expand_manifest.json
+
+# Virtualenv (1.2 GB) - recreate with:
+#   uv venv --python 3.11 .venv && uv pip install -r requirements.txt
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Run logs
+*.log
+
+# OS
+.DS_Store

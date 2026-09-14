@@ -1,0 +1,20 @@
+{
+ "evidence_links": 998,
+ "distinct_domains": 488,
+ "top1_domain": "(no source url)",
+ "top1_share": 5.8,
+ "top10_share": 19.0,
+ "mean_evidence_per_claim": 2.28,
+ "mean_distinct_sources_per_claim": 1.79,
+ "claims_resting_on_a_single_source": 207,
+ "pct_claims_single_source": 47.4,
+ "medium_distribution": {
+  "Web text": 792,
+  "PDF": 77,
+  "Metadata": 57,
+  "Web table": 29,
+  "Image/graphic": 20,
+  "Other": 13,
+  "Video": 10
+ }
+}

@@ -1,0 +1,4 @@
+system,accuracy,macro_f1
+Sys1 text-only,0.678,0.234
+Sys3 top-1 NLI,0.254,0.232
+Sys4 TruthLens,0.475,0.312

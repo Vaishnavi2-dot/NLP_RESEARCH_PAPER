@@ -1,0 +1,11 @@
+system,dataset,accuracy,macro_f1
+Sys-Maj majority class (Supported),FEVER,0.333,0.167
+Sys0 Binary text-only,FEVER,0.518,0.518
+Sys1 Text-only classifier,FEVER,0.44,0.421
+Sys2 Retrieval + surface heuristic (no NLI),FEVER,0.54,0.504
+Sys3 Retrieval+NLI top-1,FEVER,0.66,0.663
+Sys4 TruthLens full,FEVER,0.723,0.722
+Sys3 (bm25),FEVER,0.673,0.675
+Sys4 ablation (bm25-only),FEVER,0.71,0.712
+Sys3 (dense),FEVER,0.652,0.654
+Sys4 ablation (dense-only),FEVER,0.667,0.669

@@ -1,0 +1,18 @@
+{
+ "python": "3.11.16",
+ "platform": "macOS-26.6.2-arm64-arm-64bit",
+ "machine": "arm64",
+ "cpu_count": 8,
+ "torch": "2.14.0",
+ "device": "mps",
+ "torch_dtype": "float16",
+ "nli_tier": "strong",
+ "nli_model": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
+ "encoder": "paraphrase-multilingual-MiniLM-L12-v2",
+ "transformers": "5.17.0",
+ "numpy": "2.4.6",
+ "sklearn": "1.9.1",
+ "pandas": "3.0.5",
+ "cpu_model": "Apple M1 Pro",
+ "ram_gb": 32
+}

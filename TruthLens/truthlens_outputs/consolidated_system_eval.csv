@@ -1,0 +1,22 @@
+system,dataset,accuracy,macro_f1
+Sys-Maj majority class (Supported),FEVER,0.333,0.167
+Sys0 Binary text-only,FEVER,0.518,0.518
+Sys1 Text-only classifier,FEVER,0.44,0.421
+Sys2 Retrieval + surface heuristic (no NLI),FEVER,0.54,0.504
+Sys3 Retrieval+NLI top-1,FEVER,0.66,0.663
+Sys4 TruthLens full,FEVER,0.723,0.722
+Sys3 (bm25),FEVER,0.673,0.675
+Sys4 ablation (bm25-only),FEVER,0.71,0.712
+Sys3 (dense),FEVER,0.652,0.654
+Sys4 ablation (dense-only),FEVER,0.667,0.669
+Sys-Maj majority class (Refuted),AVeriTeC,0.61,0.189
+Sys0 Binary text-only,AVeriTeC,0.73,0.595
+Sys1 Text-only classifier,AVeriTeC,0.618,0.293
+Sys2 Retrieval + surface heuristic (no NLI),AVeriTeC,0.212,0.176
+Sys3 Retrieval+NLI top-1,AVeriTeC,0.324,0.252
+Sys4 TruthLens full (conflict-aware),AVeriTeC,0.472,0.334
+Sys4 ablation: no conflict label,AVeriTeC,0.498,0.331
+Sys3 (bm25),AVeriTeC,0.314,0.241
+Sys4 ablation (bm25-only),AVeriTeC,0.434,0.312
+Sys3 (dense),AVeriTeC,0.31,0.242
+Sys4 ablation (dense-only),AVeriTeC,0.484,0.342

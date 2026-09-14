@@ -1,0 +1,92 @@
+{
+  "mode": "full (transformer NLI + multilingual MiniLM)",
+  "n_posts": 18,
+  "n_gold_claims": 31,
+  "n_evidence": 30,
+  "language_detection_accuracy": 1.0,
+  "claim_extraction": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "n_pred": 31,
+    "n_gold": 31
+  },
+  "retrieval": [
+    {
+      "mode": "bm25",
+      "recall_at_5": 0.907,
+      "precision_at_5": 0.267
+    },
+    {
+      "mode": "dense",
+      "recall_at_5": 1.0,
+      "precision_at_5": 0.289
+    },
+    {
+      "mode": "hybrid",
+      "recall_at_5": 0.981,
+      "precision_at_5": 0.281
+    }
+  ],
+  "systems": [
+    {
+      "system": "Sys0 Binary text classifier",
+      "task": "binary fake/real",
+      "accuracy": 0.516,
+      "macro_f1": 0.508
+    },
+    {
+      "system": "Sys1 4-way text classifier",
+      "task": "4-way claim verdict",
+      "accuracy": 0.548,
+      "macro_f1": 0.42
+    },
+    {
+      "system": "Sys2 Retrieval + surface heuristic (no NLI)",
+      "task": "4-way claim verdict",
+      "accuracy": 0.645,
+      "macro_f1": 0.407
+    },
+    {
+      "system": "Sys3 Retrieval + NLI (top-1)",
+      "task": "4-way claim verdict",
+      "accuracy": 0.677,
+      "macro_f1": 0.478
+    },
+    {
+      "system": "Sys4 TruthLens (full)",
+      "task": "4-way claim verdict",
+      "accuracy": 0.645,
+      "macro_f1": 0.571
+    },
+    {
+      "system": "Sys4 ablation: BM25-only",
+      "task": "4-way claim verdict",
+      "accuracy": 0.71,
+      "macro_f1": 0.662
+    },
+    {
+      "system": "Sys4 ablation: dense-only",
+      "task": "4-way claim verdict",
+      "accuracy": 0.613,
+      "macro_f1": 0.541
+    },
+    {
+      "system": "Sys4 ablation: no conflict label",
+      "task": "4-way claim verdict",
+      "accuracy": 0.645,
+      "macro_f1": 0.429
+    }
+  ],
+  "temporal": {
+    "accuracy": 0.968,
+    "recall": 0.5,
+    "false_positives": []
+  },
+  "narrative": {
+    "k": 8,
+    "silhouette": 0.162,
+    "nmi": 0.813,
+    "ari": 0.68
+  }
+}

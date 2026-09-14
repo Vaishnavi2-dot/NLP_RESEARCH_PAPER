@@ -1,0 +1,13 @@
+setting,language,mode,hit_rate_at_5,n_queries
+leaky,english,bm25,1.0,400
+leaky,english,dense,0.9725,400
+leaky,english,hybrid,0.99,400
+leaky,hindi,bm25,0.9925,400
+leaky,hindi,dense,0.8775,400
+leaky,hindi,hybrid,0.98,400
+de_leaked,english,bm25,0.7975,400
+de_leaked,english,dense,0.4275,400
+de_leaked,english,hybrid,0.725,400
+de_leaked,hindi,bm25,0.64,400
+de_leaked,hindi,dense,0.3475,400
+de_leaked,hindi,hybrid,0.635,400
