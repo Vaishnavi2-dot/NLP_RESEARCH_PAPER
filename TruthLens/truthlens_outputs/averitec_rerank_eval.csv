@@ -1,0 +1,3 @@
+dataset,stage,recall_at_5,precision_at_5,evidence_f1_at_5,accuracy,macro_f1
+AVeriTeC,hybrid top-5 (from depth-50 pool),0.4346,0.1822,0.2382,0.468,0.332
+AVeriTeC,+ cross-encoder rerank of top-50,0.4848,0.2005,0.2635,0.488,0.342

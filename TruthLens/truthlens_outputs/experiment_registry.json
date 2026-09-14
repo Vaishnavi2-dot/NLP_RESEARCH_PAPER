@@ -10,7 +10,17 @@
   "data": "real (fever.ai)"
  },
  {
+  "experiment": "FEVER two-stage retrieval (cross-encoder rerank of depth-50 pool): retrieval + verdict impact, 600 claims",
+  "status": "completed",
+  "data": "real"
+ },
+ {
   "experiment": "AVeriTeC conflict-rule study (threshold grid selected on 600 train claims, evaluated on 500 dev claims)",
+  "status": "completed",
+  "data": "real"
+ },
+ {
+  "experiment": "AVeriTeC two-stage retrieval (cross-encoder rerank of depth-50 pool): retrieval + 4-way verdict impact, 500 claims",
   "status": "completed",
   "data": "real"
  },

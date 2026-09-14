@@ -5,7 +5,7 @@ test the TruthLens framework from the project synopsis. **Phase 2 (the paper) ha
 been started.**
 
 All numbers below were produced by executing `TruthLens_Research_Project.ipynb` end to
-end (42/42 code cells, no errors) on real public benchmarks. Nothing is synthetic. The
+end (44/44 code cells, no errors) on real public benchmarks. Nothing is synthetic. The
 demonstration corpus in Parts 2–9 exists only to validate the pipeline and every one of
 its artifacts is written with a `demo_` prefix.
 
@@ -181,6 +181,36 @@ account for only 19.0 % — the corpus is not source-concentrated. But
 **47.4 % of claims rest on a single source domain** (mean 1.79 distinct domains/claim),
 which directly substantiates the source-diversity risk the synopsis raises.
 
+### 3.8 Two-stage retrieval: cross-encoder reranking
+
+Retrieval was identified above as the binding constraint, so it was tested directly:
+retrieve a depth-50 hybrid pool, rerank with `cross-encoder/ms-marco-MiniLM-L-6-v2`,
+keep top-5, then run the identical NLI judge and aggregation. The baseline row is
+recomputed **from the same depth-50 pool**, so the delta isolates the reranker.
+
+| Dataset | Stage | Recall@5 | Ev-F1@5 | Accuracy | Macro-F1 |
+|---|---|---|---|---|---|
+| FEVER (207k) | hybrid top-5 | 0.673 | 0.263 | 0.722 | 0.721 |
+| FEVER (207k) | **+ rerank** | **0.761** | **0.308** | **0.753** | **0.750** |
+| AVeriTeC | hybrid top-5 | 0.435 | 0.238 | 0.468 | 0.332 |
+| AVeriTeC | **+ rerank** | **0.485** | **0.264** | **0.488** | **0.342** |
+
+**Retrieval improves on both** — +0.088 and +0.050 Recall@5 — for about 155 s of extra
+compute on MPS. Notably, reranked Recall@5 on FEVER's **207k-sentence** corpus (0.761)
+nearly matches the old gold-pages-only score (0.788) on a haystack 30x larger: the
+cheap protocol's advantage is recoverable by a better ranker rather than by an easier
+corpus.
+
+**The verdict effect splits.** On FEVER it carries through: +0.031 accuracy,
+McNemar *p* = 0.0455 — significant. On AVeriTeC it is only a trend: +0.020 accuracy,
++0.010 macro-F1, McNemar *p* = 0.212 — **not significant**.
+
+So the hypothesis that retrieval is the binding constraint is confirmed for *retrieval
+quality* on both datasets, but converts into a reliable end-task gain only on FEVER.
+Even at Recall@5 = 0.485 more than half of AVeriTeC's gold evidence is still missed,
+and the 4-way task (with *Conflicting* at 7.6%) stays hard. Reranking is worth keeping
+— it is cheap and never hurt — but it does not by itself rescue AVeriTeC.
+
 ---
 
 ## 4. Does the synopsis's research question hold?
@@ -189,12 +219,14 @@ which directly substantiates the source-diversity risk the synopsis raises.
 > event-level narrative analysis improve factual verification over conventional text
 > classification or similarity-only retrieval?*
 
-**On FEVER, decisively yes** — 0.723 vs 0.440 accuracy over text-only, monotone across
-the component ladder, significant under McNemar, on a 207k-sentence corpus.
+**On FEVER, decisively yes** — 0.723 vs 0.440 accuracy over text-only (0.753 with
+reranking), monotone across the component ladder, significant under McNemar, on a
+207k-sentence corpus.
 
-**On AVeriTeC, only partially** — better than text-only on macro-F1 (0.334 vs 0.293)
-but below a majority-class baseline on accuracy, with retrieval (R@5 0.415) as the
-binding constraint.
+**On AVeriTeC, only partially** — better than text-only on macro-F1 (0.334, or 0.342
+with reranking, vs 0.293) but below a majority-class baseline on accuracy. Retrieval
+is the binding constraint, and §3.8 shows that relieving it helps retrieval a lot and
+the end task only a little.
 
 **The conflict-awareness contribution is not yet supported** (§3.5), and the temporal
 contribution **cannot be properly tested on AVeriTeC** (§3.6). Both should be presented
@@ -233,11 +265,11 @@ Each would have yielded a plausible-looking but misleading number.
 ## 7. Experiments that ran
 
 Recorded live in `truthlens_outputs/experiment_registry.json` — an experiment appears
-there only because its cell executed. 12 entries: FEVER retrieval (2 settings) and
+there only because its cell executed. 14 entries: FEVER retrieval (2 settings) and
 verdict classification; AVeriTeC retrieval, 4-way verdicts, India subset, conflict-rule
 study, narrative clustering, T1 timing characterisation, T2/T3 temporal ablations,
-evidence graph + provenance; FactDrill characterisation and EN/HI retrieval (2
-settings).
+evidence graph + provenance; two-stage reranking on both FEVER and AVeriTeC;
+FactDrill characterisation and EN/HI retrieval (2 settings).
 
 ## 8. Experiments that could **not** run, and why
 
@@ -257,10 +289,10 @@ settings).
 
 | Item | Where |
 |---|---|
-| Executed notebook | `TruthLens_Research_Project.ipynb` (42/42 cells, no errors) |
-| Source code | `build_notebook.py` (source of truth), `prep_*.py` ×4, `run_notebook.py`, `bench_nli_devices.py` |
+| Executed notebook | `TruthLens_Research_Project.ipynb` (44/44 cells, no errors) |
+| Source code | `build_notebook.py` (source of truth), `prep_*.py` ×4, `run_notebook.py`, `bench_nli_devices.py`, `exp_rerank.py` |
 | Dataset acquisition | `README.md` + notebook Part 14.2 (exact URLs, sizes, licences) |
-| Result tables | `truthlens_outputs/*.csv` (12 files) |
+| Result tables | `truthlens_outputs/*.csv` (15 files) |
 | Figures | `truthlens_outputs/*.png` (10 files) + `averitec_evidence_graph.gexf` |
 | Metrics | `*_eval.csv`, `averitec_provenance.json`, `averitec_temporal_characterisation.json` |
 | Ran / could-not-run | `experiment_registry.json`, notebook 14.1 + §7–8 above |
@@ -274,6 +306,8 @@ settings).
 3. **Always state the corpus size next to a retrieval number**; the FEVER pair (0.788 vs
    0.669) is the same system on the same claims.
 4. **The FactDrill leaky numbers are not results.** Only the de-leaked rows are.
-5. **Retrieval is the binding constraint on AVeriTeC**, not the NLI layer — the most
-   valuable next experiment is a stronger retriever (cross-encoder reranking), not a
-   bigger NLI model.
+5. **Retrieval is the binding constraint — now tested (§3.8).** Cross-encoder reranking
+   lifts Recall@5 on both datasets and verdict accuracy significantly on FEVER, but
+   only non-significantly on AVeriTeC. Do not claim reranking fixes AVeriTeC. The next
+   lever there is the evidence pool itself (the AVeriTeC knowledge store, limitation 4),
+   not a bigger judge model.

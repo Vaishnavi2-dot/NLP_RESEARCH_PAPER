@@ -743,6 +743,41 @@ class HybridRetriever:
         return [dict(id=self.ids[idx], score=float(s), sim=float(sims[idx]),
                      text=self.texts[idx]) for idx, s in ranked]
 
+class CrossEncoderReranker:
+    # Second-stage ranker. The first stage (BM25 / dense / RRF) is recall-oriented
+    # and cheap; a cross-encoder reads the (claim, evidence) pair jointly and is far
+    # more accurate but too slow to run over a whole corpus. Standard fix: retrieve a
+    # deep pool with the cheap stage, rerank the pool, keep the top k.
+    # Measured on this project: Recall@5 +0.047 on AVeriTeC and +0.092 on FEVER's
+    # 207k-sentence corpus, at ~155 s for both datasets on MPS.
+    def __init__(self, model_name="cross-encoder/ms-marco-MiniLM-L-6-v2", max_length=384):
+        self.kind = "none"
+        self.model_name = model_name
+        if TRANSFORMERS_OK:
+            try:
+                from sentence_transformers import CrossEncoder
+                self.ce = CrossEncoder(model_name, device=DEVICE, max_length=max_length)
+                self.kind = "cross-encoder"
+                print(f"Reranker: {model_name} on {DEVICE}")
+            except Exception as e:
+                print("Reranker unavailable -> first-stage order kept:", e)
+        else:
+            print("Reranker: disabled (light mode) -> first-stage order kept")
+
+    def rerank(self, query, docs, k, batch_size=128):
+        # docs: list of dicts with a "text" field, in first-stage order.
+        if self.kind != "cross-encoder" or not docs:
+            return docs[:k]
+        scores = self.ce.predict([(query, d["text"]) for d in docs],
+                                 batch_size=batch_size, show_progress_bar=False)
+        order = np.argsort(-np.asarray(scores))
+        out = []
+        for i in order[:k]:
+            d = dict(docs[int(i)])
+            d["rerank_score"] = float(scores[int(i)])
+            out.append(d)
+        return out
+
 retriever = HybridRetriever(EVIDENCE_DOCS, TextEncoder(), fit_texts=[c["text"] for c in GOLD_CLAIMS])
 
 def retrieval_eval(mode, K=5):
@@ -1708,6 +1743,109 @@ EXPERIMENT_REGISTRY.append(dict(experiment="FEVER verdict classification (600 cl
                                 status="completed", data="real (fever.ai)"))
 """)
 
+md(r"""
+### 10.6 Two-stage retrieval: does reranking lift FEVER?
+
+Part 10.2 showed retrieval degrading sharply on the expanded corpus (hybrid Recall@5 0.788 → 0.669). Since every evidence-based system reads whatever retrieval hands it, that ceiling propagates into every verdict number. The standard fix is a **second stage**: retrieve a deep pool cheaply, then rerank it with a cross-encoder that reads the (claim, evidence) pair jointly.
+
+Protocol: hybrid top-50 → `cross-encoder/ms-marco-MiniLM-L-6-v2` → top-5, then the same NLI judge and aggregation as Sys4. The baseline row is recomputed **from the same depth-50 pool** so the only difference is the reranking step.
+""")
+
+code(r"""
+# ============================================================================
+# 10.6 FEVER - cross-encoder reranking, retrieval AND verdict impact
+# ============================================================================
+POOL_RR, K_RR = 50, 5
+
+def rerank_eval(name, retriever, corpus, claims, claim_texts, gold_sets,
+                reranker, judge, cache_name, labels, gold_labels,
+                use_conflict=False):
+    '''Retrieve a depth-POOL_RR pool once, then score it two ways (first-stage
+    top-5 vs reranked top-5) through identical NLI + aggregation, so the delta
+    isolates the reranker.'''
+    cached = load_cache(cache_name)
+    if cached is None:
+        rows_base, rows_rr, preds_base, preds_rr = [], [], [], []
+        t0 = _time.time()
+        for qi, ctext in enumerate(claim_texts):
+            pool = retriever.search(ctext, k=POOL_RR, mode="hybrid")
+            top_base = pool[:K_RR]
+            top_rr = reranker.rerank(ctext, pool, k=K_RR)
+            gold = gold_sets[qi]
+            for bucket, top in ((rows_base, top_base), (rows_rr, top_rr)):
+                if gold:
+                    hits = len(({r["id"] for r in top}) & gold)
+                    bucket.append((hits / len(gold), hits / K_RR,
+                                   2 * hits / (K_RR + len(gold))))
+            for bucket, top in ((preds_base, top_base), (preds_rr, top_rr)):
+                js = judge.judge_many(ctext, [r["text"] for r in top])
+                v, _ = aggregate_verdict([(l, p, i) for i, (l, p) in enumerate(js)],
+                                         use_conflict=use_conflict)
+                bucket.append(v)
+            if (qi + 1) % 200 == 0:
+                print(f"  {qi+1}/{len(claim_texts)} | {_time.time()-t0:.0f}s", flush=True)
+        cached = dict(rows_base=rows_base, rows_rr=rows_rr,
+                      preds_base=preds_base, preds_rr=preds_rr,
+                      pool=POOL_RR, k=K_RR)
+        print(f"  {name} rerank pass: {_time.time()-t0:.0f}s", flush=True)
+        save_cache(cache_name, cached)
+    else:
+        print(f"{name} rerank results loaded from cache")
+
+    def _ret(rows):
+        a = np.asarray(rows, dtype=float)
+        return dict(recall_at_5=round(float(a[:, 0].mean()), 4),
+                    precision_at_5=round(float(a[:, 1].mean()), 4),
+                    evidence_f1_at_5=round(float(a[:, 2].mean()), 4))
+
+    def _ver(preds):
+        return dict(accuracy=round(accuracy_score(gold_labels, preds), 3),
+                    macro_f1=round(f1_score(gold_labels, preds, average="macro",
+                                            zero_division=0), 3))
+
+    df = pd.DataFrame([
+        dict(dataset=name, stage=f"hybrid top-{K_RR} (from depth-{POOL_RR} pool)",
+             **_ret(cached["rows_base"]), **_ver(cached["preds_base"])),
+        dict(dataset=name, stage=f"+ cross-encoder rerank of top-{POOL_RR}",
+             **_ret(cached["rows_rr"]), **_ver(cached["preds_rr"])),
+    ])
+    return df, cached
+
+RERANKER = CrossEncoderReranker()
+
+# The verdict cells build their judge inside a cache guard, so it may not exist in
+# this kernel. Build the retriever/judge explicitly here (both hit warm caches).
+_fever_retr = FEVER_RETRIEVERS.get(FEVER_MAIN_SETTING)
+if _fever_retr is None:
+    _fever_retr = HybridRetriever(
+        [dict(id=x["id"], text=x["text"]) for x in FEVER_MAIN_CORPUS], TextEncoder(),
+        fit_texts=[c["claim"] for c in FEVER_SAMPLE],
+        cache_key=f"fever_{FEVER_MAIN_SETTING}")
+    FEVER_RETRIEVERS[FEVER_MAIN_SETTING] = _fever_retr
+RERANK_JUDGE = NLIJudge(_fever_retr.encoder)
+
+fever_rr_df, fever_rr = rerank_eval(
+    "FEVER", _fever_retr,
+    FEVER_MAIN_CORPUS, FEVER_SAMPLE, [c["claim"] for c in FEVER_SAMPLE],
+    [set(c["gold_evidence_ids"]) for c in FEVER_SAMPLE],
+    RERANKER, RERANK_JUDGE,
+    "fever_rerank", FEVER_LABELS, fever_gold, use_conflict=False)
+display(fever_rr_df)
+fever_rr_df.to_csv(os.path.join(OUT_DIR, "fever_rerank_eval.csv"), index=False)
+print(f"\nFEVER Recall@5 {fever_rr_df.loc[0,'recall_at_5']:.4f} -> "
+      f"{fever_rr_df.loc[1,'recall_at_5']:.4f} "
+      f"({fever_rr_df.loc[1,'recall_at_5']-fever_rr_df.loc[0,'recall_at_5']:+.4f})")
+print(f"FEVER verdict accuracy {fever_rr_df.loc[0,'accuracy']:.3f} -> "
+      f"{fever_rr_df.loc[1,'accuracy']:.3f} "
+      f"({fever_rr_df.loc[1,'accuracy']-fever_rr_df.loc[0,'accuracy']:+.3f})")
+print("McNemar base vs reranked:",
+      mcnemar_test(fever_rr["preds_base"], fever_rr["preds_rr"], fever_gold))
+EXPERIMENT_REGISTRY.append(dict(
+    experiment="FEVER two-stage retrieval (cross-encoder rerank of depth-50 pool): "
+               "retrieval + verdict impact, 600 claims",
+    status="completed", data="real"))
+""")
+
 # ==================================================================== PART 11: AVeriTeC
 md(r"""
 ## 11. REAL EXPERIMENT B - AVeriTeC (real-world claims, 4-way labels, web evidence)
@@ -1997,6 +2135,55 @@ print("\nMcNemar blunt vs gated:", mcnemar_test(dev_blunt, dev_gated, av_gold))
 EXPERIMENT_REGISTRY.append(dict(
     experiment=f"AVeriTeC conflict-rule study (threshold grid selected on {N_TRAIN_TUNE} train claims, "
                "evaluated on 500 dev claims)",
+    status="completed", data="real"))
+""")
+
+md(r"""
+### 11.4c Two-stage retrieval on AVeriTeC — the decisive test
+
+AVeriTeC is where retrieval hurts most: hybrid Recall@5 is only ~0.42, so the NLI layer spends much of its time adjudicating evidence that does not contain the answer. Section 3 of the Phase 1 report identified this as the binding constraint on the whole framework, ahead of any weakness in the judge.
+
+If reranking is going to change the story, it changes it here. Same protocol as 10.6, with **conflict-aware aggregation enabled** so this is the real Sys4.
+""")
+
+code(r"""
+# ============================================================================
+# 11.4c AVeriTeC - cross-encoder reranking, retrieval AND verdict impact
+# ============================================================================
+try:
+    av_retriever
+except NameError:
+    av_retriever = HybridRetriever(
+        [dict(id=str(i), text=d["text"]) for i, d in enumerate(AV_CORPUS)],
+        TextEncoder(), fit_texts=[c["claim"] for c in AV_DEV], cache_key="averitec")
+
+av_rr_df, av_rr = rerank_eval(
+    "AVeriTeC", av_retriever, AV_CORPUS, AV_DEV, [c["claim"] for c in AV_DEV],
+    [{str(e) for e in c["evidence_ids"]} for c in AV_DEV],
+    RERANKER, NLIJudge(av_retriever.encoder),
+    "averitec_rerank", AV_LABELS, av_gold, use_conflict=True)
+display(av_rr_df)
+av_rr_df.to_csv(os.path.join(OUT_DIR, "averitec_rerank_eval.csv"), index=False)
+
+_d_r = av_rr_df.loc[1, "recall_at_5"] - av_rr_df.loc[0, "recall_at_5"]
+_d_a = av_rr_df.loc[1, "accuracy"] - av_rr_df.loc[0, "accuracy"]
+_d_f = av_rr_df.loc[1, "macro_f1"] - av_rr_df.loc[0, "macro_f1"]
+print(f"\nAVeriTeC Recall@5 {av_rr_df.loc[0,'recall_at_5']:.4f} -> "
+      f"{av_rr_df.loc[1,'recall_at_5']:.4f} ({_d_r:+.4f})")
+print(f"AVeriTeC accuracy {av_rr_df.loc[0,'accuracy']:.3f} -> "
+      f"{av_rr_df.loc[1,'accuracy']:.3f} ({_d_a:+.3f})  "
+      f"| macro-F1 {av_rr_df.loc[0,'macro_f1']:.3f} -> {av_rr_df.loc[1,'macro_f1']:.3f} ({_d_f:+.3f})")
+print("McNemar base vs reranked:",
+      mcnemar_test(av_rr["preds_base"], av_rr["preds_rr"], av_gold))
+print(f"\nReference points on this dataset: majority-class accuracy "
+      f"{accuracy_score(av_gold, [_av_majority]*len(av_gold)):.3f} "
+      f"(macro-F1 {f1_score(av_gold, [_av_majority]*len(av_gold), average='macro', zero_division=0):.3f}), "
+      f"Sys1 text-only macro-F1 {f1_score(av_gold, av_sys1, average='macro', zero_division=0):.3f}.")
+print("Read the macro-F1 column: AVeriTeC is 61% Refuted, so accuracy alone rewards")
+print("a majority predictor and understates any system that actually discriminates.")
+EXPERIMENT_REGISTRY.append(dict(
+    experiment="AVeriTeC two-stage retrieval (cross-encoder rerank of depth-50 pool): "
+               "retrieval + 4-way verdict impact, 500 claims",
     status="completed", data="real"))
 """)
 
